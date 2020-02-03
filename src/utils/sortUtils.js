@@ -6,23 +6,26 @@
  * TODO: Needs tests!
  */
 export function defaultSort(data, column, sortAscending = true) {
-  return data.sort(
-    (original, newRecord) => {
-      const columnKey = column.split('.');
-      const originalValue = (original.hasIn(columnKey) && original.getIn(columnKey)) || '';
-      const newRecordValue = (newRecord.hasIn(columnKey) && newRecord.getIn(columnKey)) || '';
+  return data.sort((original, newRecord) => {
+    const columnKey = column.split('.');
+    const originalValue =
+      (original.hasIn(columnKey) && original.getIn(columnKey)) || '';
+    const newRecordValue =
+      (newRecord.hasIn(columnKey) && newRecord.getIn(columnKey)) || '';
 
-      //TODO: This is about the most cheezy sorting check ever.
-      //Make it better
-      if(originalValue === newRecordValue) {
-        return 0;
-      } else if (originalValue > newRecordValue) {
-        return sortAscending ? 1 : -1;
-      }
-      else {
-        return sortAscending ? -1 : 1;
-      }
-    });
+    if (originalValue) originalValue = originalValue.toLowerCase();
+    if (newRecordValue) newRecordValue = newRecordValue.toLowerCase();
+
+    //TODO: This is about the most cheezy sorting check ever.
+    //Make it better
+    if (originalValue === newRecordValue) {
+      return 0;
+    } else if (originalValue > newRecordValue) {
+      return sortAscending ? 1 : -1;
+    } else {
+      return sortAscending ? -1 : 1;
+    }
+  });
 }
 
 export function setSortProperties({ setSortColumn, sortProperty, columnId }) {
@@ -46,15 +49,15 @@ export function getSortIconProps(props) {
   const { sortAscendingClassName, sortDescendingClassName } = props;
 
   if (sortProperty) {
-    return sortProperty.sortAscending ?
-    {
-      icon: sortAscendingIcon,
-      iconClassName: sortAscendingClassName,
-    } :
-    {
-      icon: sortDescendingIcon,
-      iconClassName: sortDescendingClassName,
-    };
+    return sortProperty.sortAscending
+      ? {
+          icon: sortAscendingIcon,
+          iconClassName: sortAscendingClassName
+        }
+      : {
+          icon: sortDescendingIcon,
+          iconClassName: sortDescendingClassName
+        };
   }
 
   // return null so we don't render anything if no sortProperty

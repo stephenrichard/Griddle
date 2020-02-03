@@ -9,12 +9,12 @@ export function defaultSort(data, column, sortAscending = true) {
   return data.sort((original, newRecord) => {
     const columnKey = column.split('.');
     const originalValue =
-      (original.hasIn(columnKey) && original.getIn(columnKey)) || '';
+      (original.hasIn(columnKey) && original.getIn(columnKey).toLowerCase()) ||
+      '';
     const newRecordValue =
-      (newRecord.hasIn(columnKey) && newRecord.getIn(columnKey)) || '';
-
-    if (originalValue) originalValue = originalValue.toLowerCase();
-    if (newRecordValue) newRecordValue = newRecordValue.toLowerCase();
+      (newRecord.hasIn(columnKey) &&
+        newRecord.getIn(columnKey).toLowerCase()) ||
+      '';
 
     //TODO: This is about the most cheezy sorting check ever.
     //Make it better
